@@ -33,25 +33,25 @@ contract DeUnivPaper is ERC721 {
     constructor() ERC721("DeUnivPaper", "DUPR") public {
     }
 
-    function publishPaper(address author, string memory tokenURI) public returns (uint256) {
+    function publishPaper(string memory tokenURI) public returns (uint256) {
         _tokenIds.increment();
 
         uint256 newPaperId = _tokenIds.current();
-        _mint(author, newPaperId);
+        _mint(msg.sender, newPaperId);
         _setTokenURI(newPaperId, tokenURI);        
-        _paperMapping[newPaperId].Authors[author] = 100;
+        _paperMapping[newPaperId].Authors[msg.sender] = 100;
         _paperMapping[newPaperId].Created = true;
 
-        emit PaperPublished(author, tokenURI);
+        emit PaperPublished(msg.sender, tokenURI);
 
         return newPaperId;
     }
 
-    function updatePaper(address author, uint256 paperId, string memory tokenURI) public {
-        require(_paperMapping[paperId].Created && _paperMapping[paperId].Authors[author] > 0);
+    function updatePaper(uint256 paperId, string memory tokenURI) public {
+        require(_paperMapping[paperId].Created && _paperMapping[paperId].Authors[msg.sender] > 0);
 
         _setTokenURI(paperId, tokenURI);        
-        emit PaperUpdated(paperId, author, tokenURI);
+        emit PaperUpdated(paperId, msg.sender, tokenURI);
     }
 }
 
@@ -68,11 +68,11 @@ contract DeUnivMember is ERC721 {
     constructor() ERC721("DeUnivMember", "DUMR") public {
     }
 
-    function registerMember(address member, string memory tokenURI) public returns (uint256) {
+    function registerMember(string memory tokenURI) public returns (uint256) {
         _tokenIds.increment();
 
         uint256 newMemberId = _tokenIds.current();
-        _mint(member, newMemberId);
+        _mint(msg.sender, newMemberId);
         _setTokenURI(newMemberId, tokenURI);
         _memberMapping[newMemberId].Reputation = 50;
         return newMemberId;
