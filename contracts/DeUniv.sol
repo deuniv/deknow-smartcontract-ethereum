@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract DeUnivToken is ERC20 {
-    constructor(uint256 initialSupply) ERC20("DeUniv", "DUV") public {
+    constructor() ERC20("DeUniv", "DUV") public {
         _mint(msg.sender, 10000000000000000000000000000);
     }
 }
