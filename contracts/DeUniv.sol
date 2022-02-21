@@ -25,7 +25,7 @@ contract DeUnivMember is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    constructor() ERC721("DeUnivPaper", "DUMR") public {
+    constructor() ERC721("DeUnivMember", "DUMR") public {
     }
 
     function registerMember(address member, string memory tokenURI) public returns (uint256) {
