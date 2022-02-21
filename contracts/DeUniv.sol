@@ -3,6 +3,14 @@ pragma solidity ^0.7.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+
+contract DeUnivToken is ERC20 {
+    constructor(uint256 initialSupply) ERC20("DeUniv", "DUV") public {
+        _mint(msg.sender, 10000000000000000000000000000);
+    }
+}
+
 contract DeUnivPaper is ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
