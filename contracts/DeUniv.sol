@@ -24,7 +24,11 @@ contract DeUnivPaper is ERC721 {
         string Description;
         mapping(address => int) Authors;
         string Data;
+        bool Created;
     }
+
+    event PaperPublished(address author, string tokenURI);
+    event PaperUpdated(uint256 paperId, address author, string tokenURI);
 
     constructor() ERC721("DeUnivPaper", "DUPR") public {
     }
@@ -36,7 +40,18 @@ contract DeUnivPaper is ERC721 {
         _mint(author, newPaperId);
         _setTokenURI(newPaperId, tokenURI);        
         _paperMapping[newPaperId].Authors[author] = 100;
+        _paperMapping[newPaperId].Created = true;
+
+        emit PaperPublished(author, tokenURI);
+
         return newPaperId;
+    }
+
+    function updatePaper(address author, uint256 paperId, string memory tokenURI) public {
+        require(_paperMapping[paperId].Created && _paperMapping[paperId].Authors[author] > 0);
+
+        _setTokenURI(paperId, tokenURI);        
+        emit PaperUpdated(paperId, author, tokenURI);
     }
 }
 
