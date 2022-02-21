@@ -30,7 +30,7 @@ openzepplin
 solidity 0.7.3
 
 ## Development and Deployment
-####Hardhat
+#### Hardhat
 
 https://hardhat.org/getting-started/#installation
 ```
@@ -43,7 +43,7 @@ npx hardhat node
 npx hardhat run scripts/sample-script.js --network localhost
 ```
 
-####Open Zeppelin
+#### Open Zeppelin
 
 https://docs.openzeppelin.com/upgrades-plugins/1.x/
 ```
@@ -51,7 +51,7 @@ npm install @openzeppelin/contracts
 npm install --save-dev @openzeppelin/hardhat-upgrades @nomiclabs/hardhat-ethers ethers
 ```
 
-####Testing Using Mainnet Forking
+#### Testing Using Mainnet Forking
 
 https://hardhat.org/guides/mainnet-forking.html
 
@@ -61,7 +61,7 @@ Also we should use pinning mode.
 npx hardhat node --fork https://eth-mainnet.alchemyapi.io/v2/<key> --fork-block-number 11095000
 ```
 
-####Using Hardhat Libraries
+#### Using Hardhat Libraries
 
 https://rahulsethuram.medium.com/the-new-solidity-dev-stack-buidler-ethers-waffle-typescript-tutorial-f07917de48ae
 ```
@@ -69,7 +69,7 @@ npm install --save-dev ts-node typescript @types/node @types/mocha
 npm install --save-dev hardhat-typechain typechain ts-generator @typechain/ethers-v5
 ```
 
-####Sample Interface
+#### Sample Interface
 
 React Typescript
 
@@ -78,4 +78,9 @@ https://github.com/nomiclabs/hardhat-hackathon-boilerplate
 ```
 npm install --save-dev @ethers-react/system
 npx create-react-app counter-app --template typescript
+```
+
+#### Manual Deployment
+```
+sol-merger --remove-comments contracts/DeUniv.sol
 ```
