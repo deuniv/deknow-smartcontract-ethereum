@@ -117,6 +117,22 @@ contract DeUnivPaper is ERC721 {
         _paperMapping[paperId].References = references;
     }
 
+    function updateAuthors(uint256 paperId, uint256[] memory authors) public {
+        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        uint256 memberId = members.getMemberId(msg.sender);
+        require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
+
+        // clear current mappings
+        for(uint idx = 0; idx < _paperMapping[paperId].Authors.length; idx ++) {
+            delete _paperMapping[paperId].AuthorMap[_paperMapping[paperId].Authors[idx]];
+        }
+        // Set new mappings and list
+        _paperMapping[paperId].Authors = authors;
+        for(uint idx = 0; idx < authors.length; idx++) {
+            _paperMapping[paperId].AuthorMap[authors[idx]] = 1;
+        }
+    }
+
     function getAuthors(uint256 paperId) public view returns (uint256[] memory) {
         require(_paperMapping[paperId].Created);
         return _paperMapping[paperId].Authors;
