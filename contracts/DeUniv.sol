@@ -70,6 +70,10 @@ contract DeUnivPaper is ERC721 {
     event PaperPublished3(uint256 memberId, uint256 paperId, address author);
     event PaperUpdated(uint256 paperId, uint256 memberId, address author, string tokenURI);
     event PaperUpdated2(uint256 memberId, uint256 paperId, address author);
+    event AuthorRemoved(uint256 paperId, uint256 memberId, address byAuthor);
+    event AuthorAdded(uint256 paperId, uint256 memberId, address byAuthor);
+    event ReferenceRemoved(uint256 paperId, uint256 refPaperId, address byAuthor);
+    event ReferenceAdded(uint256 paperId, uint256 refPaperId, address byAuthor);
 
     constructor() ERC721("DeUnivPaper", "DUPR") public {
     }
@@ -114,7 +118,13 @@ contract DeUnivPaper is ERC721 {
         uint256 memberId = members.getMemberId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
+        for(uint idx = 0; idx < _paperMapping[paperId].References.length; idx ++) {
+            emit ReferenceRemoved(paperId, _paperMapping[paperId].References[idx], msg.sender);
+        }
         _paperMapping[paperId].References = references;
+        for(uint idx = 0; idx < _paperMapping[paperId].References.length; idx ++) {
+            emit ReferenceAdded(paperId, _paperMapping[paperId].References[idx], msg.sender);
+        }
     }
 
     function updateAuthors(uint256 paperId, uint256[] memory authors) public {
@@ -125,11 +135,13 @@ contract DeUnivPaper is ERC721 {
         // clear current mappings
         for(uint idx = 0; idx < _paperMapping[paperId].Authors.length; idx ++) {
             delete _paperMapping[paperId].AuthorMap[_paperMapping[paperId].Authors[idx]];
+            emit AuthorRemoved(paperId, _paperMapping[paperId].Authors[idx], msg.sender);
         }
         // Set new mappings and list
         _paperMapping[paperId].Authors = authors;
         for(uint idx = 0; idx < authors.length; idx++) {
             _paperMapping[paperId].AuthorMap[authors[idx]] = 1;
+            emit AuthorAdded(paperId, authors[idx], msg.sender);
         }
     }
 
