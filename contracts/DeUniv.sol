@@ -58,14 +58,18 @@ contract DeUnivPaper is ERC721 {
     struct Paper {
         string Title;
         string Description;
-        mapping(address => int) AuthorMap;
+        mapping(uint256 => int) AuthorMap;
         uint256[] Authors;
         string Data;
         bool Created;
+        uint256[] References;
     }
 
-    event PaperPublished(address author, string tokenURI);
-    event PaperUpdated(uint256 paperId, address author, string tokenURI);
+    event PaperPublished(address author, uint256 memberId, string tokenURI);
+    event PaperPublished2(uint256 paperId, address author, uint256 memberId);
+    event PaperPublished3(uint256 memberId, uint256 paperId, address author);
+    event PaperUpdated(uint256 paperId, uint256 memberId, address author, string tokenURI);
+    event PaperUpdated2(uint256 memberId, uint256 paperId, address author);
 
     constructor() ERC721("DeUnivPaper", "DUPR") public {
     }
@@ -75,32 +79,51 @@ contract DeUnivPaper is ERC721 {
     }
 
     function publishPaper(string memory tokenURI) public returns (uint256) {
+        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        uint256 memberId = members.getMemberId(msg.sender);
+        require(memberId > 0);
+
         _tokenIds.increment();
 
         uint256 newPaperId = _tokenIds.current();
         _mint(msg.sender, newPaperId);
         _setTokenURI(newPaperId, tokenURI);        
-        _paperMapping[newPaperId].AuthorMap[msg.sender] = 100;
-
-
-        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
-        _paperMapping[newPaperId].Authors = [members.getMemberId(msg.sender)];
+        _paperMapping[newPaperId].AuthorMap[memberId] = 100;
+        _paperMapping[newPaperId].Authors = [memberId];
         _paperMapping[newPaperId].Created = true;
 
-        emit PaperPublished(msg.sender, tokenURI);
+        emit PaperPublished(msg.sender, memberId, tokenURI);
+        emit PaperPublished2(newPaperId, msg.sender, memberId);
+        emit PaperPublished3(memberId, newPaperId, msg.sender);
 
         return newPaperId;
     }
 
     function updatePaper(uint256 paperId, string memory tokenURI) public {
-        require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[msg.sender] > 0);
+        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        uint256 memberId = members.getMemberId(msg.sender);
+        require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
         _setTokenURI(paperId, tokenURI);        
-        emit PaperUpdated(paperId, msg.sender, tokenURI);
+        emit PaperUpdated(paperId, memberId, msg.sender, tokenURI);
+        emit PaperUpdated2(memberId, paperId, msg.sender);
+    }
+
+    function updateReferences(uint256 paperId, uint256[] memory references) public {
+        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        uint256 memberId = members.getMemberId(msg.sender);
+        require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
+
+        _paperMapping[paperId].References = references;
     }
 
     function getAuthors(uint256 paperId) public view returns (uint256[] memory) {
         require(_paperMapping[paperId].Created);
         return _paperMapping[paperId].Authors;
+    }
+
+    function getReferences(uint256 paperId) public view returns (uint256[] memory) {
+        require(_paperMapping[paperId].Created);
+        return _paperMapping[paperId].References;
     }
 }
