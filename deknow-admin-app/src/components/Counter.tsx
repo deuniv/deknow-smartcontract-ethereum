@@ -272,21 +272,22 @@ class Counter extends Component<CounterProps, CounterState> {
               {this.state.web2Papers.map((paper) => (
                 <Fragment>
                     <div style={{fontSize: "12px"}}>
+                        <hr style={{width: "60%", borderStyle: "dashed"}}/>
                         Title: {paper['title']}<br/>
                         Authors: {paper['authors']}<br/>
                         Date: {paper['publication_date']}<br/>
-                        <hr/>
                     </div>
                 </Fragment>
               ))}
               <hr/>
+              <h6>Minted Scholar NFT</h6>
               <div>ScholarId: {this.state.web3ScholarId}</div>
               <hr/>
               <h6>Web3</h6>
+              <input type="text" onChange={this.handleDeKnowScholarId} name="DeKnow Scholar Id" />
+              <button onClick={this.handleRefresh}>Fetch</button>
               <div>Scholar: {this.state.author}</div>
               <div>ProfileImage: <img src={this.state.profileImageUri} width="auto" height="60" alt="profile"/></div>
-              <input type="text" onChange={this.handleDeKnowScholarId} name="DeKnow Scholar Id" />
-              <button onClick={this.handleRefresh}>Refresh</button>
           </div>
       );
     }
