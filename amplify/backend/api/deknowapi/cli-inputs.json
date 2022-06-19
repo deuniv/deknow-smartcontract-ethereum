@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/": {
+      "name": "/",
+      "lambdaFunction": "deknownftservice59c2a5fb",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-deknownftservice-dev-144026-authRole",
+      "UnauthRoleArn": "arn:aws:iam::048156509593:role/amplify-deknownftservice-dev-144026-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::048156509593:role/amplify-deknownftservice-dev-144026-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-deknownftservice-dev-144026-deployment",
+      "UnauthRoleName": "amplify-deknownftservice-dev-144026-unauthRole",
+      "StackName": "amplify-deknownftservice-dev-144026",
+      "StackId": "arn:aws:cloudformation:us-east-1:048156509593:stack/amplify-deknownftservice-dev-144026/6ff91940-f018-11ec-93e2-0e8fe4a0603d",
+      "AmplifyAppId": "d3uyw0s926ih08"
+    },
+    "categories": {
+      "function": {
+        "deknownftservice59c2a5fb": {
+          "deploymentBucketName": "amplify-deknownftservice-dev-144026-deployment",
+          "s3Key": "amplify-builds/deknownftservice59c2a5fb-644445757a4473685343-build.zip"
+        }
+      }
+    }
+  }
+}
