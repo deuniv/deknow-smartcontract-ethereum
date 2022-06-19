@@ -62,7 +62,8 @@ class NoWalletDetected extends Component {
 
 interface CounterProps {}
 interface CounterState {
-    count: number;
+    author: string;
+    profileImageUri: string;
     networkError: string;
     selectedAddress: string;
 }
@@ -76,7 +77,8 @@ class Counter extends Component<CounterProps, CounterState> {
     constructor(props: CounterProps) {
         super(props);
         this.state = {
-            count: 0,
+            author: '',
+            profileImageUri: '',
             networkError: '',
             selectedAddress: '',
         };
@@ -172,10 +174,10 @@ class Counter extends Component<CounterProps, CounterState> {
         console.log(author);
         const profileImageUri = await this.chainDeKnowScholar.getProfileImage(1);
         console.log(profileImageUri);
-        // const count = await this.chainCounter.getCount();
-        // this.setState({
-        //     count: count.toNumber()
-        // })
+        this.setState({
+            author: author,
+            profileImageUri: profileImageUri
+        });
     }
 
     render() {
@@ -204,7 +206,8 @@ class Counter extends Component<CounterProps, CounterState> {
 
       return (
           <div>
-              <div>Current Count: {this.state.count}</div>
+              <div>Author: {this.state.author}</div>
+              <div>ProfileImage: <img src={this.state.profileImageUri} width="60" height="60" alt="profile"/></div>
               <button onClick={this.handleIncrement}>Increment</button>
               <button onClick={this.handleDecrement}>Decrement</button>
               <button onClick={this.handleRefresh}>Refresh</button>

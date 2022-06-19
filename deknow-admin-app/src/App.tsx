@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        Counter App - Smart Contract Example
+        DeKnow Admin App
         <Counter/>
       </header>
     </div>
