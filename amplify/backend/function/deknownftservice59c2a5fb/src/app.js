@@ -7,7 +7,7 @@ See the License for the specific language governing permissions and limitations 
 */
 
 
-
+const { ethers } = require('ethers');
 
 const express = require('express')
 const bodyParser = require('body-parser')
@@ -25,58 +25,70 @@ app.use(function(req, res, next) {
   next()
 });
 
-
 /**********************
  * Example get method *
  **********************/
  app.get('/scholar/opensea/:scholarId', function(req, res) {
-  res.json({
-    "attributes": [
-      {
-        "trait_type": "Base",
-        "value": "narwhal"
-      },
-      {
-        "trait_type": "Eyes",
-        "value": "sleepy"
-      },
-      {
-        "trait_type": "Mouth",
-        "value": "cute"
-      },
-      {
-        "trait_type": "Level",
-        "value": req.params.loanId
-      },
-      {
-        "trait_type": "Stamina",
-        "value": 90.2
-      },
-      {
-        "trait_type": "Personality",
-        "value": "Boring"
-      },
-      {
-        "display_type": "boost_number",
-        "trait_type": "Aqua Power",
-        "value": 10
-      },
-      {
-        "display_type": "boost_percentage",
-        "trait_type": "Stamina Increase",
-        "value": 5
-      },
-      {
-        "display_type": "number",
-        "trait_type": "Generation",
-        "value": 1
-      }
-    ],
-    "description": "DeKnow Scholar",
-    "external_url": `https://7l0593rc6k.execute-api.us-east-1.amazonaws.com/details?url=${req.params.scholarId}`,
-    "image": 'https://drive.google.com/file/d/1hWVF2hJlNU205vsH9Y_A-9IPUQpdgF5K/view?usp=sharing',
-    "name": `DeKnow Scholar #${req.params.scholarId}`
-  });
+  //  Infura
+  const infura_provider = new ethers.providers.InfuraProvider(
+    'rinkeby', // or 'ropsten', 'rinkeby', 'kovan', 'goerli'
+    'bc5e010d21174c11b0542e349b57908e'
+  )
+  const owner_signer = new ethers.Wallet('f50c5c30648b4e0351f8e6c2bfa105a27cfc5d5ff2ccc5f875e62cf994dcec7a', infura_provider)
+
+  const DEKNOW_SCHOLAR_V1_ABI = [
+    "function getName(uint256 scholarId) public view returns (string memory)",
+  ];
+  const deknowScholar = new ethers.Contract('0x3590Da3A6539d5f5F856104D81d34E3e1B7ccd43', DEKNOW_SCHOLAR_V1_ABI, owner_signer);
+  deknowScholar.getName(req.params.scholarId).then((name) => {
+    res.json({
+      "attributes": [
+        {
+          "trait_type": "Name",
+          "value": name
+        },
+        {
+          "trait_type": "Eyes",
+          "value": "sleepy"
+        },
+        {
+          "trait_type": "Mouth",
+          "value": "cute"
+        },
+        {
+          "trait_type": "Level",
+          "value": req.params.scholarId
+        },
+        {
+          "trait_type": "Stamina",
+          "value": 90.2
+        },
+        {
+          "trait_type": "Personality",
+          "value": "Boring"
+        },
+        {
+          "display_type": "boost_number",
+          "trait_type": "Aqua Power",
+          "value": 10
+        },
+        {
+          "display_type": "boost_percentage",
+          "trait_type": "Stamina Increase",
+          "value": 5
+        },
+        {
+          "display_type": "number",
+          "trait_type": "Generation",
+          "value": 1
+        }
+      ],
+      "description": `${name}`,
+      "external_url": `https://7l0593rc6k.execute-api.us-east-1.amazonaws.com/details?url=${req.params.scholarId}`,
+      "image": 'https://deknow-public.s3.amazonaws.com/Deknow+Icon.jpg',
+      "name": `DeKnow Scholar - ${name}`
+    });
+  })
 });
 
 app.get('/', function(req, res) {

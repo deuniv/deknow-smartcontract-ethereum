@@ -87,7 +87,7 @@ sol-merger --remove-comments contracts/DeKnow.sol
 
 
 #### Testing on Rinkeby
-DeKnowScholar: 0x395B09F9229120Cb963E2154ACC8Ef7a82cA6B3c
+DeKnowScholar: 0x3590Da3A6539d5f5F856104D81d34E3e1B7ccd43
 
 #### NFT Marketplace API
 

@@ -25,21 +25,24 @@ contract DeKnowScholar is IDeKnowScholar, ERC721 {
 
     struct Scholar {
         int Reputation;
-        string Author;
+        string Name;
         string ProfileImageUri;
+        string ScholarUri;
     }
 
     constructor() ERC721("DeKnowScholar", "DKS") public {
+        _setBaseURI("https://w3t99ce360.execute-api.us-east-1.amazonaws.com/dev/scholar/opensea/");
     }
 
-    function registerScholar(string memory tokenURI, string memory author) public returns (uint256) {
+    function registerScholar(string memory scholarUri, string memory name) public returns (uint256) {
         _tokenIds.increment();
 
         uint256 newScholarId = _tokenIds.current();
         _mint(msg.sender, newScholarId);
-        _setTokenURI(newScholarId, tokenURI);
+        // _setTokenURI(newScholarId, tokenURI);
         _scholarMapping[newScholarId].Reputation = 50;
-        _scholarMapping[newScholarId].Author = author;
+        _scholarMapping[newScholarId].Name = name;
+        _scholarMapping[newScholarId].ScholarUri = scholarUri;
         _addrToScholar[msg.sender] = newScholarId;
         return newScholarId;
     }
@@ -53,8 +56,8 @@ contract DeKnowScholar is IDeKnowScholar, ERC721 {
         return _addrToScholar[scholarAddress];
     }
 
-    function getAuthor(uint256 scholarId) public view returns (string memory) {
-        return _scholarMapping[scholarId].Author;
+    function getName(uint256 scholarId) public view returns (string memory) {
+        return _scholarMapping[scholarId].Name;
     }
 
     function getProfileImage(uint256 scholarId) public view returns (string memory) {

@@ -31,7 +31,7 @@ const ERC20_ABI = [
 const ERC20_TOKEN_ADDRESS = '0x43d2b5cc2e818e4b168f7f34d32f4512674c6868';
 
 const CHAIN_COUNTER_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
-const CHAIN_DEKNOW_SCHOLAR_ADDRESS = '0x395B09F9229120Cb963E2154ACC8Ef7a82cA6B3c'
+const CHAIN_DEKNOW_SCHOLAR_ADDRESS = '0x3590Da3A6539d5f5F856104D81d34E3e1B7ccd43'
 
 declare var window: any;
 
@@ -227,7 +227,7 @@ class Counter extends Component<CounterProps, CounterState> {
 
     async handleRefresh() {
         console.log('Fetching ', this.deknowScholarId);
-        const author = await this.chainDeKnowScholar.getAuthor(this.deknowScholarId);
+        const author = await this.chainDeKnowScholar.getName(this.deknowScholarId);
         console.log(author);
         const profileImageUri = await this.chainDeKnowScholar.getProfileImage(this.deknowScholarId);
         console.log(profileImageUri);

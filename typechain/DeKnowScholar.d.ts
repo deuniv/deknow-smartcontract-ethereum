@@ -26,7 +26,7 @@ interface DeKnowScholarInterface extends ethers.utils.Interface {
     "balanceOf(address)": FunctionFragment;
     "baseURI()": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
-    "getAuthor(uint256)": FunctionFragment;
+    "getName(uint256)": FunctionFragment;
     "getProfileImage(uint256)": FunctionFragment;
     "getScholarId(address)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
@@ -56,7 +56,7 @@ interface DeKnowScholarInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "getAuthor",
+    functionFragment: "getName",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
@@ -125,7 +125,7 @@ interface DeKnowScholarInterface extends ethers.utils.Interface {
     functionFragment: "getApproved",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "getAuthor", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getName", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "getProfileImage",
     data: BytesLike
@@ -252,14 +252,14 @@ export class DeKnowScholar extends Contract {
       0: string;
     }>;
 
-    getAuthor(
+    getName(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
       0: string;
     }>;
 
-    "getAuthor(uint256)"(
+    "getName(uint256)"(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<{
@@ -333,14 +333,14 @@ export class DeKnowScholar extends Contract {
     }>;
 
     registerScholar(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
     "registerScholar(string,string)"(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: Overrides
     ): Promise<ContractTransaction>;
 
@@ -505,12 +505,9 @@ export class DeKnowScholar extends Contract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  getAuthor(
-    scholarId: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<string>;
+  getName(scholarId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
-  "getAuthor(uint256)"(
+  "getName(uint256)"(
     scholarId: BigNumberish,
     overrides?: CallOverrides
   ): Promise<string>;
@@ -559,14 +556,14 @@ export class DeKnowScholar extends Contract {
   ): Promise<string>;
 
   registerScholar(
-    tokenURI: string,
-    author: string,
+    scholarUri: string,
+    name: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
   "registerScholar(string,string)"(
-    tokenURI: string,
-    author: string,
+    scholarUri: string,
+    name: string,
     overrides?: Overrides
   ): Promise<ContractTransaction>;
 
@@ -704,12 +701,12 @@ export class DeKnowScholar extends Contract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    getAuthor(
+    getName(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
 
-    "getAuthor(uint256)"(
+    "getName(uint256)"(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<string>;
@@ -758,14 +755,14 @@ export class DeKnowScholar extends Contract {
     ): Promise<string>;
 
     registerScholar(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     "registerScholar(string,string)"(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -924,12 +921,12 @@ export class DeKnowScholar extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    getAuthor(
+    getName(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    "getAuthor(uint256)"(
+    "getName(uint256)"(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -981,14 +978,14 @@ export class DeKnowScholar extends Contract {
     ): Promise<BigNumber>;
 
     registerScholar(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
     "registerScholar(string,string)"(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: Overrides
     ): Promise<BigNumber>;
 
@@ -1133,12 +1130,12 @@ export class DeKnowScholar extends Contract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    getAuthor(
+    getName(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    "getAuthor(uint256)"(
+    "getName(uint256)"(
       scholarId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
@@ -1190,14 +1187,14 @@ export class DeKnowScholar extends Contract {
     ): Promise<PopulatedTransaction>;
 
     registerScholar(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
     "registerScholar(string,string)"(
-      tokenURI: string,
-      author: string,
+      scholarUri: string,
+      name: string,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>;
 
