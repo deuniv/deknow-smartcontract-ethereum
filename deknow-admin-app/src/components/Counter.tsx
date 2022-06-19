@@ -1,4 +1,4 @@
-import {Component} from "react";
+import {Component, Fragment} from "react";
 
 import { ethers } from "ethers";
 import { Counter as ChainCounter } from "../../../typechain/Counter";
@@ -64,6 +64,7 @@ interface CounterProps {}
 interface CounterState {
     web2Author: '',
     web2ProfileImageUri: '',
+    web2Papers: [],
     web3ScholarId: '',
     author: string;
     profileImageUri: string;
@@ -85,6 +86,7 @@ class Counter extends Component<CounterProps, CounterState> {
         this.state = {
             web2Author: '',
             web2ProfileImageUri: '',
+            web2Papers: [],
             web3ScholarId: '',
             author: '',
             profileImageUri: '',
@@ -199,7 +201,8 @@ class Counter extends Component<CounterProps, CounterState> {
             console.log(d);
             this.setState({
                 web2Author: d['author'],
-                web2ProfileImageUri: d['profile_img']
+                web2ProfileImageUri: d['profile_img'],
+                web2Papers: d['publications']
             });
         })
         .catch (err => {
@@ -265,6 +268,18 @@ class Counter extends Component<CounterProps, CounterState> {
               <div>Author: {this.state.web2Author}</div>
               <div>ProfileImage: <img src={this.state.web2ProfileImageUri} width="60" height="60" alt="profile"/></div>
               <button onClick={this.handleMint}>Mint</button>
+              <div>Papers:</div>
+              {this.state.web2Papers.map((paper) => (
+                <Fragment>
+                    <div>
+                        Title: {paper['title']}<br/>
+                        Authors: {paper['authors']}<br/>
+                        Date: {paper['publication_date']}<br/>
+                        <hr/>
+                    </div>
+                </Fragment>
+              ))}
+              <hr/>
               <div>ScholarId: {this.state.web3ScholarId}</div>
               <hr/>
               <h6>Web3</h6>
