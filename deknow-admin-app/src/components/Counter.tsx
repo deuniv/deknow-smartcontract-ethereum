@@ -265,13 +265,13 @@ class Counter extends Component<CounterProps, CounterState> {
           <div>
               <h6>Web2</h6>
               <input type="text" onChange={this.handleGoogleScholarUri} name="Google Scholar Uri" /><button onClick={this.handleSubmitGoogleScholarUri}>Submit</button>
-              <div>Author: {this.state.web2Author}</div>
-              <div>ProfileImage: <img src={this.state.web2ProfileImageUri} width="60" height="60" alt="profile"/></div>
+              <div>Scholar: {this.state.web2Author}</div>
+              <div>ProfileImage: <img src={this.state.web2ProfileImageUri} width="auto" height="60" alt="profile"/></div>
               <button onClick={this.handleMint}>Mint</button>
               <div>Papers:</div>
               {this.state.web2Papers.map((paper) => (
                 <Fragment>
-                    <div>
+                    <div style={{fontSize: "12px"}}>
                         Title: {paper['title']}<br/>
                         Authors: {paper['authors']}<br/>
                         Date: {paper['publication_date']}<br/>
@@ -283,8 +283,8 @@ class Counter extends Component<CounterProps, CounterState> {
               <div>ScholarId: {this.state.web3ScholarId}</div>
               <hr/>
               <h6>Web3</h6>
-              <div>Author: {this.state.author}</div>
-              <div>ProfileImage: <img src={this.state.profileImageUri} width="60" height="60" alt="profile"/></div>
+              <div>Scholar: {this.state.author}</div>
+              <div>ProfileImage: <img src={this.state.profileImageUri} width="auto" height="60" alt="profile"/></div>
               <input type="text" onChange={this.handleDeKnowScholarId} name="DeKnow Scholar Id" />
               <button onClick={this.handleRefresh}>Refresh</button>
           </div>
