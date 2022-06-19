@@ -84,3 +84,7 @@ npx create-react-app counter-app --template typescript
 ```
 sol-merger --remove-comments contracts/DeKnow.sol
 ```
+
+
+#### Testing on Rinkeby
+DeKnowScholar: 0xEd12C8415610292738D7f119792f4E8c688719fc

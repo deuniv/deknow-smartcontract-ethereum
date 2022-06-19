@@ -6,44 +6,54 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract DeUnivToken is ERC20 {
-    constructor() ERC20("DeUniv", "DUV") public {
+contract DeuToken is ERC20 {
+    constructor() ERC20("Deu", "DEU") public {
         _mint(msg.sender, 10000000000000000000000000000);
     }
 }
 
 interface IDeKnowScholar {
-    function getMemberId(address memberAddress) external view returns (uint256);
+    function getScholarId(address scholarAddress) external view returns (uint256);
 }
 
 contract DeKnowScholar is IDeKnowScholar, ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    mapping(uint256 => Member) _memberMapping;
-    mapping(address => uint256) _addrToMember;
+    mapping(uint256 => Scholar) _scholarMapping;
+    mapping(address => uint256) _addrToScholar;
 
-    struct Member {
+    struct Scholar {
         int Reputation;
+        string Author;
+        string ProfileImageUri;
     }
 
     constructor() ERC721("DeKnowScholar", "DKS") public {
     }
 
-    function registerMember(string memory tokenURI) public returns (uint256) {
+    function registerScholar(string memory tokenURI, string memory author) public returns (uint256) {
         _tokenIds.increment();
 
-        uint256 newMemberId = _tokenIds.current();
-        _mint(msg.sender, newMemberId);
-        _setTokenURI(newMemberId, tokenURI);
-        _memberMapping[newMemberId].Reputation = 50;
-        _addrToMember[msg.sender] = newMemberId;
-        return newMemberId;
+        uint256 newScholarId = _tokenIds.current();
+        _mint(msg.sender, newScholarId);
+        _setTokenURI(newScholarId, tokenURI);
+        _scholarMapping[newScholarId].Reputation = 50;
+        _addrToScholar[msg.sender] = newScholarId;
+        return newScholarId;
     }
 
-    function getMemberId(address memberAddress) public override view returns (uint256) {
-        require(_addrToMember[memberAddress] > 0, "Requester address is not registered");
-        return _addrToMember[memberAddress];
+    function setProfileImage(uint256 scholarId, string memory profileImageUri) public {
+        _scholarMapping[scholarId].ProfileImageUri = profileImageUri;
+    }
+
+    function getScholarId(address scholarAddress) public override view returns (uint256) {
+        require(_addrToScholar[scholarAddress] > 0, "Requester address is not registered");
+        return _addrToScholar[scholarAddress];
+    }
+
+    function getAuthor(uint256 scholarId) public view returns (string memory) {
+        return _scholarMapping[scholarId].Author;
     }
 }
 
@@ -85,7 +95,7 @@ contract DeKnowPaper is ERC1155 {
 
     function publishPaper(string memory tokenURI) public returns (uint256) {
         IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
-        uint256 memberId = members.getMemberId(msg.sender);
+        uint256 memberId = members.getScholarId(msg.sender);
         require(memberId > 0);
 
         _tokenIds.increment();
@@ -106,7 +116,7 @@ contract DeKnowPaper is ERC1155 {
 
     function updatePaper(uint256 paperId, string memory tokenURI) public {
         IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
-        uint256 memberId = members.getMemberId(msg.sender);
+        uint256 memberId = members.getScholarId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
         // _setTokenURI(paperId, tokenURI);        
@@ -116,7 +126,7 @@ contract DeKnowPaper is ERC1155 {
 
     function updateReferences(uint256 paperId, uint256[] memory references) public {
         IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
-        uint256 memberId = members.getMemberId(msg.sender);
+        uint256 memberId = members.getScholarId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
         for(uint idx = 0; idx < _paperMapping[paperId].References.length; idx ++) {
@@ -130,7 +140,7 @@ contract DeKnowPaper is ERC1155 {
 
     function updateAuthors(uint256 paperId, uint256[] memory authors) public {
         IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
-        uint256 memberId = members.getMemberId(msg.sender);
+        uint256 memberId = members.getScholarId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
         // clear current mappings
