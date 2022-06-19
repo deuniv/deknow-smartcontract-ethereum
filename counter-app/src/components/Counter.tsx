@@ -2,18 +2,36 @@ import {Component} from "react";
 
 import { ethers } from "ethers";
 import { Counter as ChainCounter } from "../../../typechain/Counter";
+import { DeKnowScholar as ChainDeKnowScholar } from "../../../typechain/DeKnowScholar";
 import ChainCounterArtifact from "../artifacts/contracts/Counter.sol/Counter.json"; // Copied from root due to restriction from react
+import ChainDeKnowScholarArtifact from "../artifacts/contracts/DeKnow.sol/DeKnowScholar.json"; // Copied from root due to restriction from react
 import ConnectWallet from "./shared/ConnectWallet";
 
 // This is the Hardhat Network id, you might change it in the hardhat.config.js
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
 // to use when deploying to other networks.
-const HARDHAT_NETWORK_ID = '1337'; // to workaround compatibility with metamask
+// const HARDHAT_NETWORK_ID = '1337'; // to workaround compatibility with metamask
+const HARDHAT_NETWORK_ID = '4'; // to workaround compatibility with metamask
 
 // This is an error code that indicates that the user canceled a transaction
 // const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
 
+const ERC20_ABI = [
+    // Read-Only Functions
+    "function balanceOf(address owner) view returns (uint256)",
+    "function decimals() view returns (uint8)",
+    "function symbol() view returns (string)",
+  
+    // Authenticated Functions
+    "function transfer(address to, uint amount) returns (boolean)",
+  
+    // Events
+    "event Transfer(address indexed from, address indexed to, uint amount)"
+  ];
+const ERC20_TOKEN_ADDRESS = '0x43d2b5cc2e818e4b168f7f34d32f4512674c6868';
+
 const CHAIN_COUNTER_ADDRESS = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+const CHAIN_DEKNOW_SCHOLAR_ADDRESS = '0x395B09F9229120Cb963E2154ACC8Ef7a82cA6B3c'
 
 declare var window: any;
 
@@ -52,6 +70,7 @@ interface CounterState {
 class Counter extends Component<CounterProps, CounterState> {
     state: CounterState;
     chainCounter: any;
+    chainDeKnowScholar: any;
     _provider: any;
 
     constructor(props: CounterProps) {
@@ -90,6 +109,12 @@ class Counter extends Component<CounterProps, CounterState> {
             ChainCounterArtifact.abi,
             this._provider.getSigner(0)
         ) as ChainCounter;
+
+        this.chainDeKnowScholar = new ethers.Contract(
+            CHAIN_DEKNOW_SCHOLAR_ADDRESS,
+            ChainDeKnowScholarArtifact.abi,
+            this._provider.getSigner(0)
+        ) as ChainDeKnowScholar;
     }
 
     _initialize(userAddress: string) {
@@ -131,7 +156,11 @@ class Counter extends Component<CounterProps, CounterState> {
     }
 
     async handleIncrement() {
-        await this.chainCounter.countUp();
+        const erc20 = new ethers.Contract(ERC20_TOKEN_ADDRESS, ERC20_ABI, this._provider.getSigner(0));
+        erc20.balanceOf(CHAIN_COUNTER_ADDRESS).then((balance: number) => {
+            console.log(ethers.utils.formatEther(balance.toString()));
+          });
+        // await this.chainCounter.countUp();
     }
 
     async handleDecrement() {
@@ -139,10 +168,14 @@ class Counter extends Component<CounterProps, CounterState> {
     }
 
     async handleRefresh() {
-        const count = await this.chainCounter.getCount();
-        this.setState({
-            count: count.toNumber()
-        })
+        const author = await this.chainDeKnowScholar.getAuthor(1);
+        console.log(author);
+        const profileImageUri = await this.chainDeKnowScholar.getProfileImage(1);
+        console.log(profileImageUri);
+        // const count = await this.chainCounter.getCount();
+        // this.setState({
+        //     count: count.toNumber()
+        // })
     }
 
     render() {

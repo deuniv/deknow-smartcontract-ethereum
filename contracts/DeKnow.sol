@@ -39,6 +39,7 @@ contract DeKnowScholar is IDeKnowScholar, ERC721 {
         _mint(msg.sender, newScholarId);
         _setTokenURI(newScholarId, tokenURI);
         _scholarMapping[newScholarId].Reputation = 50;
+        _scholarMapping[newScholarId].Author = author;
         _addrToScholar[msg.sender] = newScholarId;
         return newScholarId;
     }
@@ -54,6 +55,10 @@ contract DeKnowScholar is IDeKnowScholar, ERC721 {
 
     function getAuthor(uint256 scholarId) public view returns (string memory) {
         return _scholarMapping[scholarId].Author;
+    }
+
+    function getProfileImage(uint256 scholarId) public view returns (string memory) {
+        return _scholarMapping[scholarId].ProfileImageUri;
     }
 }
 

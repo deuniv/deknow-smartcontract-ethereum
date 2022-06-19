@@ -87,4 +87,4 @@ sol-merger --remove-comments contracts/DeKnow.sol
 
 
 #### Testing on Rinkeby
-DeKnowScholar: 0xEd12C8415610292738D7f119792f4E8c688719fc
+DeKnowScholar: 0x395B09F9229120Cb963E2154ACC8Ef7a82cA6B3c

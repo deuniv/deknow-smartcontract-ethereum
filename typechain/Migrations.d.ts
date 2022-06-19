@@ -64,27 +64,19 @@ export class Migrations extends Contract {
   interface: MigrationsInterface;
 
   functions: {
-    last_completed_migration(
-      overrides?: CallOverrides
-    ): Promise<{
+    last_completed_migration(overrides?: CallOverrides): Promise<{
       0: BigNumber;
     }>;
 
-    "last_completed_migration()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "last_completed_migration()"(overrides?: CallOverrides): Promise<{
       0: BigNumber;
     }>;
 
-    owner(
-      overrides?: CallOverrides
-    ): Promise<{
+    owner(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
-    "owner()"(
-      overrides?: CallOverrides
-    ): Promise<{
+    "owner()"(overrides?: CallOverrides): Promise<{
       0: string;
     }>;
 
