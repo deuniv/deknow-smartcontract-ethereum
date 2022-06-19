@@ -1,6 +1,7 @@
 pragma solidity ^0.7.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -11,11 +12,11 @@ contract DeUnivToken is ERC20 {
     }
 }
 
-interface IDeUnivMember {
+interface IDeKnowScholar {
     function getMemberId(address memberAddress) external view returns (uint256);
 }
 
-contract DeUnivMember is IDeUnivMember, ERC721 {
+contract DeKnowScholar is IDeKnowScholar, ERC721 {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
@@ -26,7 +27,7 @@ contract DeUnivMember is IDeUnivMember, ERC721 {
         int Reputation;
     }
 
-    constructor() ERC721("DeUnivMember", "DUMR") public {
+    constructor() ERC721("DeKnowScholar", "DKS") public {
     }
 
     function registerMember(string memory tokenURI) public returns (uint256) {
@@ -47,7 +48,7 @@ contract DeUnivMember is IDeUnivMember, ERC721 {
 }
 
 /* IMPORTANT: How to co-own the paper */
-contract DeUnivPaper is ERC721 {
+contract DeKnowPaper is ERC1155 {
     using Counters for Counters.Counter;
 
     address private DEUNIV_MEMBER_CONTRACT;
@@ -75,7 +76,7 @@ contract DeUnivPaper is ERC721 {
     event ReferenceRemoved(uint256 paperId, uint256 refPaperId, address byAuthor);
     event ReferenceAdded(uint256 paperId, uint256 refPaperId, address byAuthor);
 
-    constructor() ERC721("DeUnivPaper", "DUPR") public {
+    constructor() ERC1155("") public {
     }
 
     function setInternal(address memberContract) public {
@@ -83,15 +84,15 @@ contract DeUnivPaper is ERC721 {
     }
 
     function publishPaper(string memory tokenURI) public returns (uint256) {
-        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
         uint256 memberId = members.getMemberId(msg.sender);
         require(memberId > 0);
 
         _tokenIds.increment();
 
         uint256 newPaperId = _tokenIds.current();
-        _mint(msg.sender, newPaperId);
-        _setTokenURI(newPaperId, tokenURI);        
+        // _mint(msg.sender, newPaperId);
+        // _setTokenURI(newPaperId, tokenURI);        
         _paperMapping[newPaperId].AuthorMap[memberId] = 100;
         _paperMapping[newPaperId].Authors = [memberId];
         _paperMapping[newPaperId].Created = true;
@@ -104,17 +105,17 @@ contract DeUnivPaper is ERC721 {
     }
 
     function updatePaper(uint256 paperId, string memory tokenURI) public {
-        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
         uint256 memberId = members.getMemberId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
-        _setTokenURI(paperId, tokenURI);        
+        // _setTokenURI(paperId, tokenURI);        
         emit PaperUpdated(paperId, memberId, msg.sender, tokenURI);
         emit PaperUpdated2(memberId, paperId, msg.sender);
     }
 
     function updateReferences(uint256 paperId, uint256[] memory references) public {
-        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
         uint256 memberId = members.getMemberId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 
@@ -128,7 +129,7 @@ contract DeUnivPaper is ERC721 {
     }
 
     function updateAuthors(uint256 paperId, uint256[] memory authors) public {
-        IDeUnivMember members = IDeUnivMember(DEUNIV_MEMBER_CONTRACT);
+        IDeKnowScholar members = IDeKnowScholar(DEUNIV_MEMBER_CONTRACT);
         uint256 memberId = members.getMemberId(msg.sender);
         require(_paperMapping[paperId].Created && _paperMapping[paperId].AuthorMap[memberId] > 0);
 

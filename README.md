@@ -82,5 +82,5 @@ npx create-react-app counter-app --template typescript
 
 #### Manual Deployment
 ```
-sol-merger --remove-comments contracts/DeUniv.sol
+sol-merger --remove-comments contracts/DeKnow.sol
 ```
