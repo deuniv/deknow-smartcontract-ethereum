@@ -62,6 +62,9 @@ class NoWalletDetected extends Component {
 
 interface CounterProps {}
 interface CounterState {
+    web2Author: '',
+    web2ProfileImageUri: '',
+    web3ScholarId: '',
     author: string;
     profileImageUri: string;
     networkError: string;
@@ -73,18 +76,30 @@ class Counter extends Component<CounterProps, CounterState> {
     chainCounter: any;
     chainDeKnowScholar: any;
     _provider: any;
+    googleScholarUri: string;
+    deknowScholarId: string;
+
 
     constructor(props: CounterProps) {
         super(props);
         this.state = {
+            web2Author: '',
+            web2ProfileImageUri: '',
+            web3ScholarId: '',
             author: '',
             profileImageUri: '',
             networkError: '',
             selectedAddress: '',
         };
         this.handleIncrement = this.handleIncrement.bind(this);
-        this.handleDecrement = this.handleDecrement.bind(this);
+        this.handleGoogleScholarUri = this.handleGoogleScholarUri.bind(this);
+        this.handleSubmitGoogleScholarUri = this.handleSubmitGoogleScholarUri.bind(this);
+        this.handleDeKnowScholarId = this.handleDeKnowScholarId.bind(this);
         this.handleRefresh = this.handleRefresh.bind(this);
+        this.handleMint = this.handleMint.bind(this);
+
+        this.googleScholarUri = "";
+        this.deknowScholarId = "";
     }
 
     // This method checks if Metamask selected network is Localhost:8545
@@ -165,14 +180,53 @@ class Counter extends Component<CounterProps, CounterState> {
         // await this.chainCounter.countUp();
     }
 
-    async handleDecrement() {
-        await this.chainCounter.countDown();
+    async handleGoogleScholarUri(event:any) {
+        console.log(event.target.value);
+        this.googleScholarUri = event.target.value;
+    }
+
+    async handleSubmitGoogleScholarUri() {
+        console.log("submit: ", this.googleScholarUri);
+        const apiURL = 'https://7l0593rc6k.execute-api.us-east-1.amazonaws.com/details?url='
+        await fetch('https://rocky-beyond-93496.herokuapp.com/'+apiURL+encodeURIComponent(this.googleScholarUri), {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then(r => r.json())
+        .then(d => {
+            console.log(d);
+            this.setState({
+                web2Author: d['author'],
+                web2ProfileImageUri: d['profile_img']
+            });
+        })
+        .catch (err => {
+            console.log(err);
+        })
+    }
+
+    async handleDeKnowScholarId(event:any) {
+        console.log(event.target.value);
+        this.deknowScholarId = event.target.value;
+    }
+
+    async handleMint() {
+        await this.chainDeKnowScholar.registerScholar(this.googleScholarUri, this.state.web2Author);
+        const lastScholarId = await this.chainDeKnowScholar.totalSupply();
+        console.log(lastScholarId.toNumber());
+        this.setState({
+            web3ScholarId: lastScholarId.toNumber().toString()
+        });
+        // await this.chainDeKnowScholar.setProfileImage(lastScholarId.toNumber(), this.state.web2ProfileImageUri);
     }
 
     async handleRefresh() {
-        const author = await this.chainDeKnowScholar.getAuthor(1);
+        console.log('Fetching ', this.deknowScholarId);
+        const author = await this.chainDeKnowScholar.getAuthor(this.deknowScholarId);
         console.log(author);
-        const profileImageUri = await this.chainDeKnowScholar.getProfileImage(1);
+        const profileImageUri = await this.chainDeKnowScholar.getProfileImage(this.deknowScholarId);
         console.log(profileImageUri);
         this.setState({
             author: author,
@@ -206,10 +260,17 @@ class Counter extends Component<CounterProps, CounterState> {
 
       return (
           <div>
+              <h6>Web2</h6>
+              <input type="text" onChange={this.handleGoogleScholarUri} name="Google Scholar Uri" /><button onClick={this.handleSubmitGoogleScholarUri}>Submit</button>
+              <div>Author: {this.state.web2Author}</div>
+              <div>ProfileImage: <img src={this.state.web2ProfileImageUri} width="60" height="60" alt="profile"/></div>
+              <button onClick={this.handleMint}>Mint</button>
+              <div>ScholarId: {this.state.web3ScholarId}</div>
+              <hr/>
+              <h6>Web3</h6>
               <div>Author: {this.state.author}</div>
               <div>ProfileImage: <img src={this.state.profileImageUri} width="60" height="60" alt="profile"/></div>
-              <button onClick={this.handleIncrement}>Increment</button>
-              <button onClick={this.handleDecrement}>Decrement</button>
+              <input type="text" onChange={this.handleDeKnowScholarId} name="DeKnow Scholar Id" />
               <button onClick={this.handleRefresh}>Refresh</button>
           </div>
       );
