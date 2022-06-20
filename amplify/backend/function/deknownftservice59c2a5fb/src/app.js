@@ -85,7 +85,7 @@ app.use(function(req, res, next) {
       ],
       "description": `${name}`,
       "external_url": `https://7l0593rc6k.execute-api.us-east-1.amazonaws.com/details?url=${req.params.scholarId}`,
-      "image": 'https://deknow-public.s3.amazonaws.com/Deknow+Icon.jpg',
+      "image": 'https://deknow-public.s3.amazonaws.com/D_Scholar_icon2.jpeg',
       "name": `DeKnow Scholar - ${name}`
     });
   })
