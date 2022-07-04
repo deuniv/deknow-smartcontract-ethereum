@@ -1,7 +1,7 @@
 import {Component, Fragment} from "react";
 
 import { ethers } from "ethers";
-import { Counter as ChainCounter } from "../../../typechain/Counter";
+// import { Counter as ChainCounter } from "../../../typechain/Counter";
 import { DeKnowScholar as ChainDeKnowScholar } from "../../../typechain/DeKnowScholar";
 import ChainCounterArtifact from "../artifacts/contracts/Counter.sol/Counter.json"; // Copied from root due to restriction from react
 import ChainDeKnowScholarArtifact from "../artifacts/contracts/DeKnow.sol/DeKnowScholar.json"; // Copied from root due to restriction from react
@@ -74,7 +74,7 @@ interface CounterState {
 
 class Counter extends Component<CounterProps, CounterState> {
     state: CounterState;
-    chainCounter: any;
+    // chainCounter: any;
     chainDeKnowScholar: any;
     _provider: any;
     googleScholarUri: string;
@@ -123,11 +123,11 @@ class Counter extends Component<CounterProps, CounterState> {
 
         // When, we initialize the contract using that provider and the token's
         // artifact. You can do this same thing with your contracts.
-        this.chainCounter = new ethers.Contract(
-            CHAIN_COUNTER_ADDRESS,
-            ChainCounterArtifact.abi,
-            this._provider.getSigner(0)
-        ) as ChainCounter;
+        // this.chainCounter = new ethers.Contract(
+        //     CHAIN_COUNTER_ADDRESS,
+        //     ChainCounterArtifact.abi,
+        //     this._provider.getSigner(0)
+        // ) as ChainCounter;
 
         this.chainDeKnowScholar = new ethers.Contract(
             CHAIN_DEKNOW_SCHOLAR_ADDRESS,
