@@ -133,7 +133,7 @@ class Counter extends Component<CounterProps, CounterState> {
             CHAIN_DEKNOW_SCHOLAR_ADDRESS,
             ChainDeKnowScholarArtifact.abi,
             this._provider.getSigner(0)
-        ) as ChainDeKnowScholar;
+        ) as unknown as ChainDeKnowScholar;
     }
 
     _initialize(userAddress: string) {
