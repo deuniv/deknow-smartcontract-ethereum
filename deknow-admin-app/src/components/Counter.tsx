@@ -111,7 +111,7 @@ class Counter extends Component<CounterProps, CounterState> {
         }
 
         this.setState({
-            networkError: 'Please connect Metamask to Localhost:8545'
+            networkError: 'Please connect Metamask to Rinkeby'
         });
 
         return false;
