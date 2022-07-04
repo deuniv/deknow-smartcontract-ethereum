@@ -86,7 +86,49 @@ app.use(function(req, res, next) {
       "description": `${name}`,
       "external_url": `https://7l0593rc6k.execute-api.us-east-1.amazonaws.com/details?url=${req.params.scholarId}`,
       "image": 'https://deknow-public.s3.amazonaws.com/D_Scholar_icon2.jpeg',
-      "name": `DeKnow Scholar - ${name}`
+      "name": `DeKnow Scholar - ${name}`,
+      "papers": [
+          {
+              "authors": "K Eykholt, I Evtimov, E Fernandes, B Li, A Rahmati, C Xiao, A Prakash, ...",
+              "link": "https://scholar.google.com//citations?view_op=view_citation&hl=en&oe=ASCII&user=K8vJkTcAAAAJ&citation_for_view=K8vJkTcAAAAJ:KEHW5XCvxlQC",
+              "publication_date": "2018",
+              "publication_id": "11191316420978156845",
+              "source": "Proceedings of the IEEE Conference on Computer Vision and Pattern …, 2018",
+              "title": "Robust physical-world attacks on deep learning visual classification"
+          },
+          {
+              "authors": "X Chen, C Liu, B Li, K Lu, D Song",
+              "link": "https://scholar.google.com//citations?view_op=view_citation&hl=en&oe=ASCII&user=K8vJkTcAAAAJ&citation_for_view=K8vJkTcAAAAJ:MagRZZew-58C",
+              "publication_date": "2017",
+              "publication_id": "10754564719271014682",
+              "source": "arXiv preprint arXiv:1712.05526, 2017",
+              "title": "Targeted backdoor attacks on deep learning systems using data poisoning"
+          },
+          {
+              "authors": "C Xiao, B Li, JY Zhu, W He, M Liu, D Song",
+              "link": "https://scholar.google.com//citations?view_op=view_citation&hl=en&oe=ASCII&user=K8vJkTcAAAAJ&citation_for_view=K8vJkTcAAAAJ:n35PH7pn8T4C",
+              "publication_date": "2018",
+              "publication_id": "12845583525649303247",
+              "source": "arXiv preprint arXiv:1801.02610, 2018",
+              "title": "Generating adversarial examples with adversarial networks"
+          },
+          {
+              "authors": "I Evtimov, K Eykholt, E Fernandes, T Kohno, B Li, A Prakash, A Rahmati, ...",
+              "link": "https://scholar.google.com//citations?view_op=view_citation&hl=en&oe=ASCII&user=K8vJkTcAAAAJ&citation_for_view=K8vJkTcAAAAJ:VcGLcUShYXsC",
+              "publication_date": "2017",
+              "publication_id": "1012625801062934896",
+              "source": "arXiv preprint arXiv:1707.08945 2 (3), 4, 2017",
+              "title": "Robust physical-world attacks on machine learning models"
+          },
+          {
+              "authors": "M Jagielski, A Oprea, B Biggio, C Liu, C Nita-Rotaru, B Li",
+              "link": "https://scholar.google.com//citations?view_op=view_citation&hl=en&oe=ASCII&user=K8vJkTcAAAAJ&citation_for_view=K8vJkTcAAAAJ:lLDkS9sB7dAC",
+              "publication_date": "2018",
+              "publication_id": "8427189551292568466",
+              "source": "2018 IEEE Symposium on Security and Privacy (SP), 19-35, 2018",
+              "title": "Manipulating machine learning: Poisoning attacks and countermeasures for regression learning"
+          }
+      ]
     });
   })
 });
