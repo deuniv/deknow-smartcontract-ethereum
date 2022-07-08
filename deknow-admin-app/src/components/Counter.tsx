@@ -190,7 +190,7 @@ class Counter extends Component<CounterProps, CounterState> {
     async handleSubmitGoogleScholarUri() {
         console.log("submit: ", this.googleScholarUri);
         const apiURL = 'https://7l0593rc6k.execute-api.us-east-1.amazonaws.com/details?url='
-        await fetch('https://rocky-beyond-93496.herokuapp.com/'+apiURL+encodeURIComponent(this.googleScholarUri), {
+        await fetch(apiURL+encodeURIComponent(this.googleScholarUri), {
             method: 'POST',
             mode: 'cors',
             headers: {
